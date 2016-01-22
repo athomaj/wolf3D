@@ -1,12 +1,14 @@
 ##
 ## Makefile for Makefile in /home/juliena/rendu/MUL_2013_wolf3d
-## 
+##
 ## Made by athomasjulien
 ## Login   <juliena@epitech.net>
-## 
+##
 ## Started on  Thu Dec 19 12:58:53 2013 athomasjulien
 ## Last update Sun Jan 12 22:23:27 2014 athomasjulien
 ##
+
+UNAME := $(shell uname)
 
 SRC=		wolf3d.c		\
 		my_gestion.c		\
@@ -19,14 +21,19 @@ NAME=		wolf3d
 
 CFLAGS=		-Wall -Werror -Wextra -I./minilibx
 
+ifeq ($(UNAME), Darwin)
+	SYS = $(OBJ) -lmy -L./ -L./minilibx_osx -L/usr/X11/lib -lmlx -lXext -lX11 -lm -o $(NAME)
+else
+	SYS = $(OBJ) -lmy -L./ -L./minilibx -L/usr/X11/lib -lmlx -lXext -lX11 -lm -o $(NAME)
+endif
+
 all:		subdirectory $(NAME)
 
-subdirectory:	
+subdirectory:
 		$(MAKE) -C my
 
 $(NAME):	$(OBJ)
-		gcc $(OBJ) -lmy -L./ -L./minilibx -L/usr/lib64 -lmlx -L/usr/lib64/X11 -lXext -lX11 -lm -o $(NAME)
-
+		gcc $(SYS)
 clean:
 		rm -f $(OBJ)
 
